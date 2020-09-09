@@ -81,12 +81,14 @@ struct gs_device_config {
 	u32 hw_version;
 } __packed;
 
-#define GS_CAN_MODE_NORMAL               0
-#define GS_CAN_MODE_LISTEN_ONLY          BIT(0)
-#define GS_CAN_MODE_LOOP_BACK            BIT(1)
-#define GS_CAN_MODE_TRIPLE_SAMPLE        BIT(2)
-#define GS_CAN_MODE_ONE_SHOT             BIT(3)
-#define GS_CAN_MODE_FD             	 BIT(4)
+#define GS_CAN_MODE_NORMAL               		0
+#define GS_CAN_MODE_LISTEN_ONLY          		BIT(0)
+#define GS_CAN_MODE_LOOP_BACK            		BIT(1)
+#define GS_CAN_MODE_TRIPLE_SAMPLE        		BIT(2)
+#define GS_CAN_MODE_ONE_SHOT             		BIT(3)
+#define GS_CAN_MODE_HW_TIMESTAMP         		BIT(4)
+#define GS_CAN_MODE_PAD_PKTS_TO_MAX_PKT_SIZE 	BIT(7)
+#define GS_CAN_MODE_FD             	 	 		BIT(8)
 
 struct gs_device_mode {
 	u32 mode;
@@ -111,13 +113,15 @@ struct gs_identify_mode {
 	u32 mode;
 } __packed;
 
-#define GS_CAN_FEATURE_LISTEN_ONLY      BIT(0)
-#define GS_CAN_FEATURE_LOOP_BACK        BIT(1)
-#define GS_CAN_FEATURE_TRIPLE_SAMPLE    BIT(2)
-#define GS_CAN_FEATURE_ONE_SHOT         BIT(3)
-#define GS_CAN_FEATURE_HW_TIMESTAMP     BIT(4)
-#define GS_CAN_FEATURE_IDENTIFY         BIT(5)
-#define GS_CAN_FEATURE_FD         	BIT(6)
+#define GS_CAN_FEATURE_LISTEN_ONLY      		BIT(0)
+#define GS_CAN_FEATURE_LOOP_BACK        		BIT(1)
+#define GS_CAN_FEATURE_TRIPLE_SAMPLE    		BIT(2)
+#define GS_CAN_FEATURE_ONE_SHOT         		BIT(3)
+#define GS_CAN_FEATURE_HW_TIMESTAMP     		BIT(4)
+#define GS_CAN_FEATURE_IDENTIFY         		BIT(5)
+#define GS_CAN_FEATURE_USER_ID					BIT(6)
+#define GS_CAN_FEATURE_PAD_PKTS_TO_MAX_PKT_SIZE BIT(7)
+#define GS_CAN_FEATURE_FD         				BIT(8)
 
 struct gs_device_bt_const {
 	u32 feature;
@@ -329,10 +333,6 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
 		return;
 
 	if (hf->echo_id == -1) {	/* normal rx */
-		printk
-		    ("rx frame: can_id=%X, len=%d, flags=%X, data=%02X %02X %02X ...",
-		     hf->can_id, hf->can_dlc, hf->flags, hf->data[0],
-		     hf->data[1], hf->data[2]);
 		if (hf->flags & GS_CAN_FLAG_FD) {
 			skb = alloc_canfd_skb(dev->netdev, &cfd);
 			if (!skb)
