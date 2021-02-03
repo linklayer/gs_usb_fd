@@ -429,7 +429,7 @@ resubmit_urb:
 static int gs_usb_set_data_bittiming(struct net_device *netdev)
 {
 	struct gs_can *dev = netdev_priv(netdev);
-	struct can_bittiming *bt = &dev->can.bittiming;
+	struct can_bittiming *bt = &dev->can.data_bittiming;
 	struct usb_interface *intf = dev->iface;
 	int rc;
 	struct gs_device_bittiming *dbt;
