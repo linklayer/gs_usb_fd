@@ -26,7 +26,10 @@ sudo apt install kernel-headers-$(uname -r)
 
 3. Load the driver:
 
-`sudo insmod gs_usb_fd.ko`
+```
+sudo modprobe can-dev
+sudo insmod gs_usb_fd.ko
+```
 
 ## Credits
 
